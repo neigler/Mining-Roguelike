@@ -40,7 +40,7 @@ public class DestructableTilemap : MonoBehaviour
 
                 // Play SFX
                 player.PlaySFX(player.minesfx);
-                player.CallKnockback(player.miningDir, Vector2.up, -player.miningDir.x);
+                player.CallKnockback(player.miningDir, Vector2.up);
             }
         }
     }

@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public IEnumerator KnockbackAction(Vector2 hitDirection, Vector2 constantForceDirection, float inputDirection)
+    public IEnumerator KnockbackAction(Vector2 hitDirection, Vector2 constantForceDirection)
     {
         IsBeingKnockedBack = true;
 
@@ -187,17 +187,20 @@ public class Player : MonoBehaviour
             _hitForce = hitDirection * hitDirectionForce * knockbackForceCurve.Evaluate(_time);
 
             _knockbackForce = _hitForce + _constantForce;
-
-            if (movementDir != 0)
-            {
-                _combinedForce = _knockbackForce + new Vector2(movementDir, 0f);
-            }
-            else
-            {
-                _combinedForce = _knockbackForce;
-            }
+            _combinedForce = _knockbackForce;
 
             rb.linearVelocity = _combinedForce;
+
+            if (miningDir.x == 1)
+                rb.linearVelocityX = _combinedForce.x;
+            else if(miningDir.x == -1)
+                rb.linearVelocityX = _combinedForce.x;
+
+            if (miningDir.y == 1)
+                rb.linearVelocityX = 0;
+            else if (miningDir.y == -1)
+                rb.linearVelocityX = 0;
+
 
             yield return new WaitForFixedUpdate();
         }
@@ -205,9 +208,9 @@ public class Player : MonoBehaviour
         IsBeingKnockedBack = false;
     }
 
-    public void CallKnockback(Vector2 hitDirection, Vector2 constantForceDirection, float inputDirection)
+    public void CallKnockback(Vector2 hitDirection, Vector2 constantForceDirection)
     {
-        knockbackCoroutine = StartCoroutine(KnockbackAction(hitDirection, constantForceDirection, inputDirection));
+        knockbackCoroutine = StartCoroutine(KnockbackAction(hitDirection, constantForceDirection));
     }
 
     public void PlaySFX(AudioClip clip)
